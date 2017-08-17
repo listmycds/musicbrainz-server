@@ -1,0 +1,6 @@
+[%- React.embed(c, 'root/entitysearch/index', {}) -%]
+[%- USE JSON.Escape;
+    script_manifest('entity-search.js', {'data-args' => option_data.json}) 
+-%]
+
+

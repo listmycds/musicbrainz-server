@@ -55,6 +55,7 @@ sub language_options {
             'class' => 'language',
             'optgroup' => $_->{frequency} eq $frequent ? lp('Frequently used', 'language optgroup') : lp('Other', 'language optgroup'),
             'optgroup_order' => $_->{frequency} eq $frequent ? 1 : 2,
+            'iso_code' => $_->{iso_code_3},
         }
     } grep { $_->{frequency} ne $skip } @languages;
 
@@ -79,6 +80,7 @@ sub script_options {
             'class' => 'script',
             'optgroup' => $_->{frequency} eq $frequent ? lp('Frequently used', 'script optgroup') : lp('Other', 'script optgroup'),
             'optgroup_order' => $_->{frequency} eq $frequent ? 1 : 2,
+            'iso_code' => $_->{iso_code},
         }
     } grep { $_->{frequency} ne $skip } $c->model('Script')->get_all;
     return \@sorted;
@@ -92,13 +94,12 @@ sub select_options
     my $sort_by_accessor = $opts{sort_by_accessor} // $model_ref->sort_in_forms;
     my $accessor = $opts{accessor} // 'l_name';
     my $coll = $c->get_collator();
+    my $serializer = $opts{serializer} // sub { { value => $_[0]->id, label => l($_[0]->$accessor) } };
 
-    return [ map {
-        value => $_->id,
-        label => l($_->$accessor)
-    }, sort_by {
+    return [ map $serializer->($_), sort_by {
         $sort_by_accessor ? $coll->getSortKey(l($_->$accessor)) : ''
     } $model_ref->get_all ];
+
 }
 
 sub select_options_tree
@@ -146,7 +147,7 @@ sub build_grouped_options
         $result->[$i] //= { optgroup => $opt->{optgroup}, options => [] };
 
         push @{ $result->[$i]->{options} },
-              { label => $opt->{label}, value => $opt->{value} };
+              { label => $opt->{label}, value => $opt->{value}, code => $opt->{iso_code} };
     }
     return $result;
 }

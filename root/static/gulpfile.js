@@ -278,6 +278,10 @@ runYarb('work.js', function (b) {
   b.external(editBundle).external(guessCaseBundle);
 });
 
+runYarb('entity-search.js', function (b) {
+  b.external(commonBundle);
+});
+
 gulp.task('watch', ['default'], function () {
   let watch = require('gulp-watch');
 

@@ -94,6 +94,9 @@
             <li>
                 <a href="[% c.uri_for('/search') %]">[% l('Search Entities') %]</a>
             </li>
+            <li>
+                <a href="[% c.uri_for('/entitysearch') %]">[% l('Search Entities 2') %]</a>
+            </li>
             [%- IF c.user_exists -%]
                 <li>
                     <a href="[% c.uri_for_action('/edit/search') %]">[% l('Search Edits') %]</a>

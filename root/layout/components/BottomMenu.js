@@ -154,6 +154,9 @@ const SearchMenu = () => (
       <li>
         <a href="/search">{l('Search Entities')}</a>
       </li>
+      <li>
+        <a href="/entitysearch">{l('Search Entities 2')}</a>
+      </li>
       {$c.user &&
         <li>
           <a href="/search/edits">{l('Search Edits')}</a>
